@@ -27,7 +27,7 @@ export default {
 </script>
 
 <template>
-  <h1 style="padding-bottom: 50px">Elapsed Time Project</h1>
+  <h1 style="bottom: 50px">Elapsed Time Project</h1>
   <div :style= "elapsed / duration!=1 ? 'display: none' : ''">
     <img src="https://upload.wikimedia.org/wikipedia/commons/8/81/Stop_sign.png" width=200 style="padding-bottom: 50px">
   </div>
@@ -40,7 +40,7 @@ export default {
   <br />
   <div>
     Decide duration:
-    <input type="range" v-model="duration" min="1" max="35000" />
+    <input type="range" v-model="duration" min="1" max="10000" />
     {{ (duration / 1000).toFixed(1) }} seconds
   </div>
   <br />
