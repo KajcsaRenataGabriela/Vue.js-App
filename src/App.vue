@@ -1,30 +1,38 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
+<script>
+export default {
+  data() {
+    return {
+      duration: 15 * 1000,
+      elapsed: 0
+    }
+  },
+  created() {
+    let lastTime = performance.now()
+    const update = () => {
+      const time = performance.now()
+      this.elapsed += Math.min(time - lastTime, this.duration - this.elapsed)
+      lastTime = time
+      this.handle = requestAnimationFrame(update)
+    }
+    update()
+  },
+  unmounted() {
+    cancelAnimationFrame(this.handle)
+  }
+}
 </script>
 
 <template>
+  <label>Elapsed Time: 
+    <progress :value="elapsed / duration"></progress>
+  </label>
+  <br>
+  <div>{{ (elapsed / 1000).toFixed(1) }} seconds</div>
+  <br>
   <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+    Decide duration: <input type="range" v-model="duration" min="1" max="35000">
+    {{ (duration / 1000).toFixed(1) }} seconds
   </div>
-  <HelloWorld msg="Vite + Vue" />
+  <br>
+  <button @click="elapsed = 0">Reset elapsed time</button>
 </template>
-
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>
